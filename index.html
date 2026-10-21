@@ -3,58 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Insta Username Finder</title>
+    <title>Insta Profile Finder</title>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fafafa; text-align: center; padding: 30px; }
-        .card { background: white; padding: 25px; border-radius: 12px; max-width: 400px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        input { width: 80%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
-        button { padding: 12px 20px; background-color: #E1306C; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-        .result-item { background: #f0f0f0; margin: 8px 0; padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; }
-        a { color: #E1306C; text-decoration: none; font-weight: bold; }
+        .card { background: white; padding: 25px; border-radius: 12px; max-width: 420px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input { width: 80%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; outline: none; }
+        button { padding: 12px 20px; background-color: #E1306C; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; width: 85%; }
+        button:hover { background-color: #c1235b; }
+        .info { margin-top: 15px; font-size: 14px; color: #666; line-height: 1.4; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Insta Finder 🕵️‍♂️</h2>
+    <h2>Insta Real Finder 🕵️‍♂️✨</h2>
+    <p>Search real Instagram accounts by full name!</p>
+    
     <input type="text" id="nameInput" placeholder="Enter full name (e.g. Deepesh Chauhan)">
-    <button onclick="searchUsernames()">Find Usernames</button>
+    <button onclick="searchRealProfiles()">Find Real Profiles ↗</button>
 
-    <div id="results" style="margin-top: 20px;"></div>
+    <div class="info">
+        <p>💡 <i>This will launch a live target search across all indexed public Instagram profiles!</i></p>
+    </div>
 </div>
 
 <script>
-function searchUsernames() {
-    let rawName = document.getElementById('nameInput').value.trim().toLowerCase();
-    let resultsDiv = document.getElementById('results');
-    resultsDiv.innerHTML = "";
+function searchRealProfiles() {
+    let rawName = document.getElementById('nameInput').value.trim();
+    if (!rawName) {
+        alert("Please enter a name to search!");
+        return;
+    }
 
-    if (!rawName) return;
+    // Build exact search target for Instagram profiles
+    let searchQuery = `site:instagram.com "${rawName}"`;
+    let googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
 
-    let cleanName = rawName.replace(/[^a-z0-9]/g, '');
-    let parts = rawName.split(" ");
-    
-    // Generate common Instagram username patterns
-    let handlePatterns = [
-        cleanName,
-        cleanName + "22",
-        cleanName + "_",
-        "real_" + cleanName,
-        parts[0] + "." + (parts[1] || ""),
-        parts[0] + "_" + (parts[1] || "")
-    ];
-
-    resultsDiv.innerHTML = "<h3>Possible Instagram Handles:</h3>";
-
-    handlePatterns.forEach(handle => {
-        let profileUrl = `https://www.instagram.com/${handle}/`;
-        resultsDiv.innerHTML += `
-            <div class="result-item">
-                <span>@${handle}</span>
-                <a href="${profileUrl}" target="_blank">Check Profile ↗</a>
-            </div>
-        `;
-    });
+    // Open live results instantly in a new tab
+    window.open(googleSearchUrl, '_blank');
 }
 </script>
 
